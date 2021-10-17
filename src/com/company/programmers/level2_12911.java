@@ -2,40 +2,36 @@ package com.company.programmers;
 
 import java.util.Arrays;
 
-public class level2_12913 {
-    int solution(int[][] land) {
-        int answer = 0;
-        int loc = 0;
-        int preLoc =0;
-        for(int i =0; i<land.length; i++){
-            int max = land[i][0];
-            for(int j = 0 ; j<land[i].length; j++){
-                //최고값과 그의 위치 (처음)
-                if(max < land[i][j] && preLoc == 0 ){
-                    max = land[i][j];
-                    loc = j+1;
+public class level2_12911 {
+    class Solution {
+        public int solution(int n) {
+            int answer = 0;
+            int num = n;
 
-                }else if(max < land[i][j] && preLoc != (j+1) ){
-                    max = land[i][j];
-                    loc = j+1;
-                }else{
-                    loc =1;
+            // n을 2진수 만들고 1의 개수 확인
+            int count1 = 0;
+            while(num != 0) {
+                if(num % 2 == 1) count1++;
+                num /= 2;
+            }
+
+            // n에서 1씩 증가하면서 1의 개수 확인하기
+            int count2 = 0;
+            while(true) {
+                num = ++n;
+                count2 = 0;
+                while(num != 0) {
+                    if(num % 2 == 1) count2++;
+                    num /= 2;
+                }
+
+                if(count1 == count2) {
+                    answer = n;
+                    break;
                 }
             }
-            preLoc=loc;
-            System.out.println(max+ "    " + loc);
-            answer += max;
-        }
-        return answer;
-    }
-    int solution1(int[][] land) {
-        for (int i = 1; i < land.length; i++) {
-            land[i][0] = land[i][0] + Math.max(Math.max(land[i-1][1], land[i-1][2]), land[i-1][3]); //123
-            land[i][1] = land[i][1] + Math.max(Math.max(land[i-1][0], land[i-1][2]), land[i-1][3]); //023
-            land[i][2] = land[i][2] + Math.max(Math.max(land[i-1][0], land[i-1][1]), land[i-1][3]); //013
-            land[i][3] = land[i][3] + Math.max(Math.max(land[i-1][0], land[i-1][1]), land[i-1][2]); //012
-        }
 
-        return Arrays.stream(land[land.length-1]).max().getAsInt();
+            return answer;
+        }
     }
 }
